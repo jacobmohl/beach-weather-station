@@ -17,10 +17,10 @@ This document proposes a solution and folder structure for the Beach Weather Sta
 ## Recommended Solution Structure
 
 ```
-BeachWeatherStation.WebApi.sln
+BeachWeatherStation.sln
 │
 ├── src/
-│   ├── BeachWeatherStation.Functions/            # Azure Functions project (entry points, contracts, minimal logic)
+│   ├── BeachWeatherStation.Worker/            # Azure Functions project (entry points, contracts, minimal logic)
 │   │   ├── Triggers/
 │   │   │   ├── Readings/
 │   │   │   │   └── PostReadingFunction.cs
@@ -61,12 +61,6 @@ BeachWeatherStation.WebApi.sln
 │   │   ├── Entities/
 │   │   │   └── Reading.cs
 │   │   └── ValueObjects/
-│   │
-├── tests/
-│   ├── BeachWeatherStation.Application.Tests/
-│   ├── BeachWeatherStation.Infrastructure.Tests/
-│   └── BeachWeatherStation.Functions.Tests/
-│
 └── README.md
 ```
 
@@ -74,12 +68,12 @@ BeachWeatherStation.WebApi.sln
 
 ## Structure Rationale
 
-### 1. **Contracts in Functions Project**
+### 1. **Contracts in Worker Project**
 - API contract objects (Requests/Responses) are defined under `BeachWeatherStation.Functions/Contracts/`.
 - Organized by feature: e.g., `Readings/PostReadingRequest.cs`, `Readings/PostReadingResponse.cs`.
 - No need for a separate Contracts/DTOs project or folder.
 
-### 2. **Azure Functions Project**
+### 2. **Worker / Azure Functions Project**
 - Contains only trigger classes, contract objects, and minimal wiring.
 - Each HTTP endpoint is a class in `Triggers/`, organized by feature (vertical slice).
 
@@ -95,8 +89,6 @@ BeachWeatherStation.WebApi.sln
 ### 5. **Domain Layer**
 - Contains domain models, value objects, and business rules.
 
-### 6. **Tests**
-- Separate test projects for Application, Infrastructure, and Functions.
 
 ---
 
