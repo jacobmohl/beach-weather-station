@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BeachWeatherStation.Domain.Entities;
 
-namespace BeachWeatherStation.Domain.Repositories
+namespace BeachWeatherStation.Domain.Interfaces
 {
     /// <summary>
     /// Defines the contract for device repository operations.
@@ -13,7 +13,7 @@ namespace BeachWeatherStation.Domain.Repositories
         /// </summary>
         /// <param name="deviceId">The unique identifier of the device.</param>
         /// <returns>The device details.</returns>
-        Device GetDeviceById(string deviceId);
+        Device GetDeviceById(Guid deviceId);
 
         /// <summary>
         /// Retrieves all devices in the system.
@@ -37,6 +37,6 @@ namespace BeachWeatherStation.Domain.Repositories
         /// Deletes a device record by its unique identifier.
         /// </summary>
         /// <param name="deviceId">The unique identifier of the device.</param>
-        void DeleteDevice(string deviceId);
+        void DeleteDevice(Guid deviceId);
     }
 }

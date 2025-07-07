@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BeachWeatherStation.Domain.Entities;
 
-namespace BeachWeatherStation.Domain.Repositories
+namespace BeachWeatherStation.Domain.Interfaces
 {
     /// <summary>
     /// Defines the contract for heartbeat repository operations.
@@ -13,14 +13,14 @@ namespace BeachWeatherStation.Domain.Repositories
         /// </summary>
         /// <param name="heartbeatId">The unique identifier of the heartbeat.</param>
         /// <returns>The heartbeat details.</returns>
-        Heartbeat GetHeartbeatById(string heartbeatId);
+        Heartbeat GetHeartbeatById(Guid heartbeatId);
 
         /// <summary>
         /// Retrieves all heartbeats associated with a specific device.
         /// </summary>
         /// <param name="deviceId">The unique identifier of the device.</param>
         /// <returns>A collection of heartbeats.</returns>
-        IEnumerable<Heartbeat> GetHeartbeatsByDeviceId(string deviceId);
+        IEnumerable<Heartbeat> GetHeartbeatsByDeviceId(Guid deviceId);
 
         /// <summary>
         /// Adds a new heartbeat record.
@@ -38,6 +38,6 @@ namespace BeachWeatherStation.Domain.Repositories
         /// Deletes a heartbeat record by its unique identifier.
         /// </summary>
         /// <param name="heartbeatId">The unique identifier of the heartbeat.</param>
-        void DeleteHeartbeat(string heartbeatId);
+        void DeleteHeartbeat(Guid heartbeatId);
     }
 }

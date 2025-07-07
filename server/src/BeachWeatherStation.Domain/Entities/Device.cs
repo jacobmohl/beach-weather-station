@@ -5,10 +5,11 @@ namespace BeachWeatherStation.Domain.Entities;
 /// </summary>
 public class Device 
 {
+
     /// <summary>
     /// The unique identifier of the device.
     /// </summary>
-    public required int DeviceId { get; set; }
+    public required Guid Id { get; set; }
 
     /// <summary>
     /// The name of the device.
