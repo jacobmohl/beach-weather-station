@@ -1,0 +1,8 @@
+{
+    "azureFunctions.deploySubpath": "server/src/BeachWeatherStation.Worker/bin/Release/net9.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.projectSubpath": "server/src/BeachWeatherStation.Worker",
+    "azureFunctions.preDeployTask": "publish (functions)"
+}

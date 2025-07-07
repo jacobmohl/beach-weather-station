@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Infrastructure", "src/BeachWeatherStation.Infrastructure/BeachWeatherStation.Infrastructure.csproj", "{GUID3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Worker", "src/BeachWeatherStation.Worker/BeachWeatherStation.Worker.csproj", "{GUID5}"
+EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{GUID3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{GUID3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{GUID3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{GUID5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{GUID5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{GUID5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{GUID5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
