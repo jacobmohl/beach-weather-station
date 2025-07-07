@@ -12,29 +12,29 @@ public interface IDeviceRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>The device details.</returns>
-    Device GetDeviceById(Guid deviceId);
+    Task<Device?> GetDeviceByIdAsync(Guid deviceId);
 
     /// <summary>
     /// Retrieves all devices in the system.
     /// </summary>
     /// <returns>A collection of devices.</returns>
-    IEnumerable<Device> GetAllDevices();
+    Task<IEnumerable<Device>> GetAllDevicesAsync();
 
     /// <summary>
     /// Adds a new device record.
     /// </summary>
     /// <param name="device">The device details.</param>
-    void AddDevice(Device device);
+    Task AddDeviceAsync(Device device);
 
     /// <summary>
     /// Updates an existing device record.
     /// </summary>
     /// <param name="device">The updated device details.</param>
-    void UpdateDevice(Device device);
+    Task UpdateDeviceAsync(Device device);
 
     /// <summary>
     /// Deletes a device record by its unique identifier.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
-    void DeleteDevice(Guid deviceId);
+    Task DeleteDeviceAsync(Guid deviceId);
 }

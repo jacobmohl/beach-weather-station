@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BeachWeatherStation.Domain.Entities;
 using BeachWeatherStation.Domain.Interfaces;
 using BeachWeatherStation.Infrastructure.Data;
@@ -23,86 +24,85 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
     /// <summary>
     /// Get a temperature reading by its string ID.
     /// </summary>
-    public TemperatureReading GetTemperatureReadingById(Guid temperatuReadingId)
+    public async Task<TemperatureReading?> GetTemperatureReadingByIdAsync(Guid temperatuReadingId)
     {
-        var doc = _dbContext.TemperatureReadings.AsNoTracking().FirstOrDefault(x => x.Id == temperatuReadingId);
-        if (doc == null) return null!;
+        var doc = await _dbContext.TemperatureReadings.AsNoTracking().FirstOrDefaultAsync(x => x.Id == temperatuReadingId);
         return doc;
     }
 
     /// <summary>
     /// Get all temperature readings for a specific device.
     /// </summary>
-    public IEnumerable<TemperatureReading> GetReadingsByDeviceId(Guid deviceId)
+    public async Task<IEnumerable<TemperatureReading>> GetReadingsByDeviceIdAsync(Guid deviceId)
     {
-        return _dbContext.TemperatureReadings.AsNoTracking().Where(x => x.Id == deviceId)
-            .ToList();
+        return await _dbContext.TemperatureReadings.AsNoTracking().Where(x => x.Id == deviceId)
+            .ToListAsync();
     }
 
     /// <summary>
     /// Add a new temperature reading to the database.
     /// </summary>
-    public void AddReading(TemperatureReading temperatureReading)
+    public async Task AddReadingAsync(TemperatureReading temperatureReading)
     {
-        _dbContext.TemperatureReadings.Add(temperatureReading);
-        _dbContext.SaveChanges();
+        await _dbContext.TemperatureReadings.AddAsync(temperatureReading);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
     /// Update an existing temperature reading in the database.
     /// </summary>
-    public void UpdateReading(TemperatureReading temperatureReading)
+    public async Task UpdateReadingAsync(TemperatureReading temperatureReading)
     {
-        var doc = _dbContext.TemperatureReadings.FirstOrDefault(x => x.Id == temperatureReading.Id);
+        var doc = await _dbContext.TemperatureReadings.FirstOrDefaultAsync(x => x.Id == temperatureReading.Id);
         if (doc != null)
         {
             doc.DeviceId = temperatureReading.DeviceId;
             doc.CreatedAt = temperatureReading.CreatedAt;
             doc.Temperature = temperatureReading.Temperature;
             _dbContext.TemperatureReadings.Update(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public void DeleteReading(Guid temperatureReadingId)
+    public async Task DeleteReadingAsync(Guid temperatureReadingId)
     {
-        var doc = _dbContext.TemperatureReadings.FirstOrDefault(x => x.Id == temperatureReadingId);
+        var doc = await _dbContext.TemperatureReadings.FirstOrDefaultAsync(x => x.Id == temperatureReadingId);
         if (doc != null)
         {
             _dbContext.TemperatureReadings.Remove(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
 
-    public TemperatureReading? GetLatest(Guid deviceId)
+    public async Task<TemperatureReading?> GetLatestReadingAsync(Guid deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
-        var reading = _dbContext.TemperatureReadings.AsNoTracking()
+        var reading = await _dbContext.TemperatureReadings.AsNoTracking()
                .OrderByDescending(x =>  x.CreatedAt)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
         return reading;
     }
 
-    public (IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest) GetReadingsForLast24hWithMinMax(Guid deviceId)
+    public async Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(Guid deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
-        var readings = _dbContext.TemperatureReadings.AsNoTracking()
+        var readings = await _dbContext.TemperatureReadings.AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
             .OrderBy(x => x.CreatedAt)
-            .ToList();
+            .ToListAsync();
         var highest = readings.OrderByDescending(x => x.Temperature).FirstOrDefault();
         var lowest = readings.OrderBy(x => x.Temperature).FirstOrDefault();
         return (readings, highest, lowest);
     }
 
-    public IEnumerable<DailyTemperatureStats> GetDailyStatsForLast30Days(Guid deviceId)
+    public async Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(Guid deviceId)
     {
         var since = DateTime.UtcNow.Date.AddDays(-30);
-        var readings = _dbContext.TemperatureReadings.AsNoTracking()
+        var readings = await _dbContext.TemperatureReadings.AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
-            .ToList();
+            .ToListAsync();
         var stats = readings
             .GroupBy(r => r.CreatedAt.Date)
             .Select(g => new DailyTemperatureStats

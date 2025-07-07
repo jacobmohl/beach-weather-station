@@ -23,53 +23,52 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// <summary>
     /// Get a heartbeat event by its string ID.
     /// </summary>
-    public Heartbeat GetHeartbeatById(Guid heartbeatId)
+    public async Task<Heartbeat?> GetHeartbeatByIdAsync(Guid heartbeatId)
     {
-        var doc = _dbContext.Heartbeats.AsNoTracking().FirstOrDefault(x => x.Id == heartbeatId);
-        if (doc == null) return null!;
+        var doc = await _dbContext.Heartbeats.AsNoTracking().FirstOrDefaultAsync(x => x.Id == heartbeatId);
         return doc;
     }
 
     /// <summary>
     /// Get all heartbeat events for a specific device.
     /// </summary>
-    public IEnumerable<Heartbeat> GetHeartbeatsByDeviceId(Guid deviceId)
+    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(Guid deviceId)
     {
-        return _dbContext.Heartbeats.AsNoTracking().Where(x => x.Id == deviceId)
-            .ToList();
+        return await _dbContext.Heartbeats.AsNoTracking().Where(x => x.Id == deviceId)
+            .ToListAsync();
     }
 
     /// <summary>
     /// Add a new heartbeat event to the database.
     /// </summary>
-    public void AddHeartbeat(Heartbeat heartbeat)
+    public async Task AddHeartbeatAsync(Heartbeat heartbeat)
     {
-        _dbContext.Heartbeats.Add(heartbeat);
-        _dbContext.SaveChanges();
+        await _dbContext.Heartbeats.AddAsync(heartbeat);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
     /// Update an existing heartbeat event in the database.
     /// </summary>
-    public void UpdateHeartbeat(Heartbeat heartbeat)
+    public async Task UpdateHeartbeatAsync(Heartbeat heartbeat)
     {
-        var doc = _dbContext.Heartbeats.FirstOrDefault(x => x.Id == heartbeat.Id);
+        var doc = await _dbContext.Heartbeats.FirstOrDefaultAsync(x => x.Id == heartbeat.Id);
         if (doc != null)
         {
             doc.DeviceId = heartbeat.DeviceId;
             doc.CreatedAt = heartbeat.CreatedAt;
             _dbContext.Heartbeats.Update(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public void DeleteHeartbeat(Guid heartbeatId)
+    public async Task DeleteHeartbeatAsync(Guid heartbeatId)
     {
-        var doc = _dbContext.Heartbeats.FirstOrDefault(x => x.Id == heartbeatId);
+        var doc = await _dbContext.Heartbeats.FirstOrDefaultAsync(x => x.Id == heartbeatId);
         if (doc != null)
         {
             _dbContext.Heartbeats.Remove(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -23,55 +23,54 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// <summary>
     /// Get a battery change event by its string ID.
     /// </summary>
-    public BatteryChange GetBatteryChangeById(Guid batteryChangeId)
+    public async Task<BatteryChange?> GetBatteryChangeByIdAsync(Guid batteryChangeId)
     {
-        var doc = _dbContext.BatteryChanges.AsNoTracking().FirstOrDefault(x => x.Id == batteryChangeId);
-        if (doc == null) return null!;
+        var doc = await _dbContext.BatteryChanges.AsNoTracking().FirstOrDefaultAsync(x => x.Id == batteryChangeId);
         return doc;
     }
 
     /// <summary>
     /// Get all battery change events for a specific device.
     /// </summary>
-    public IEnumerable<BatteryChange> GetBatteryChangesByDeviceId(Guid deviceId)
+    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesByDeviceIdAsync(Guid deviceId)
     {
-        return _dbContext.BatteryChanges
+        return await _dbContext.BatteryChanges
             .AsNoTracking()
             .Where(x => x.DeviceId == deviceId)
-            .ToList();
+            .ToListAsync();
     }
 
     /// <summary>
     /// Add a new battery change event to the database.
     /// </summary>
-    public void AddBatteryChange(BatteryChange batteryChange)
+    public async Task AddBatteryChangeAsync(BatteryChange batteryChange)
     {
-        _dbContext.BatteryChanges.Add(batteryChange);
-        _dbContext.SaveChanges();
+        await _dbContext.BatteryChanges.AddAsync(batteryChange);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
     /// Update an existing battery change event in the database.
     /// </summary>
-    public void UpdateBatteryChange(BatteryChange batteryChange)
+    public async Task UpdateBatteryChangeAsync(BatteryChange batteryChange)
     {
-        var doc = _dbContext.BatteryChanges.FirstOrDefault(x => x.Id == batteryChange.Id);
+        var doc = await _dbContext.BatteryChanges.FirstOrDefaultAsync(x => x.Id == batteryChange.Id);
         if (doc != null)
         {
             doc.DeviceId = batteryChange.DeviceId;
             doc.CreatedAt = batteryChange.CreatedAt;
             _dbContext.BatteryChanges.Update(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public void DeleteBatteryChange(Guid batteryChangeId)
+    public async Task DeleteBatteryChangeAsync(Guid batteryChangeId)
     {
-        var doc = _dbContext.BatteryChanges.FirstOrDefault(x => x.Id == batteryChangeId);
+        var doc = await _dbContext.BatteryChanges.FirstOrDefaultAsync(x => x.Id == batteryChangeId);
         if (doc != null)
         {
             _dbContext.BatteryChanges.Remove(doc);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

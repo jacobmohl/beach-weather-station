@@ -12,30 +12,30 @@ public interface IBatteryChangeRepository
     /// </summary>
     /// <param name="batteryChangeId">The unique identifier of the battery change.</param>
     /// <returns>The battery change details.</returns>
-    BatteryChange GetBatteryChangeById(Guid batteryChangeId);
+    Task<BatteryChange?> GetBatteryChangeByIdAsync(Guid batteryChangeId);
 
     /// <summary>
     /// Retrieves all battery changes associated with a specific device.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A collection of battery changes.</returns>
-    IEnumerable<BatteryChange> GetBatteryChangesByDeviceId(Guid deviceId);
+    Task<IEnumerable<BatteryChange>> GetBatteryChangesByDeviceIdAsync(Guid deviceId);
 
     /// <summary>
     /// Adds a new battery change record.
     /// </summary>
     /// <param name="batteryChange">The battery change details.</param>
-    void AddBatteryChange(BatteryChange batteryChange);
+    Task AddBatteryChangeAsync(BatteryChange batteryChange);
 
     /// <summary>
     /// Updates an existing battery change record.
     /// </summary>
     /// <param name="batteryChange">The updated battery change details.</param>
-    void UpdateBatteryChange(BatteryChange batteryChange);
+    Task UpdateBatteryChangeAsync(BatteryChange batteryChange);
 
     /// <summary>
     /// Deletes a battery change record by its unique identifier.
     /// </summary>
     /// <param name="batteryChangeId">The unique identifier of the battery change.</param>
-    void DeleteBatteryChange(Guid batteryChangeId);
+    Task DeleteBatteryChangeAsync(Guid batteryChangeId);
 }

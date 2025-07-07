@@ -15,9 +15,10 @@ public class ReadingsFunction
     }
 
     [Function("ReadingsFunction")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
+        await Task.Yield(); // Placeholder for async work
         return new OkObjectResult("Welcome to Azure Functions!");
     }
 }

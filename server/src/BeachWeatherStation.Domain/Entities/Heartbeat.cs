@@ -8,15 +8,15 @@ public class Heartbeat
     /// <summary>
     /// The unique identifier for the entity.
     /// </summary>
-    public required Guid Id { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// The unique identifier of the device.
     /// </summary>
-    public required int DeviceId { get; set; }
+    public Guid DeviceId { get; set; }
 
     /// <summary>
     /// The timestamp when the heartbeat was sent.
     /// </summary>
-    public required DateTime CreatedAt { get; set; }    
+    public DateTime CreatedAt { get; set; }    
 }
