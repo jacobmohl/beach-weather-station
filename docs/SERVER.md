@@ -10,7 +10,10 @@ This document outlines the technical specifications and requirements for the Bea
 - **Architecture:** Clean Architecture without CRQS, but influences by vertical sliging.
 
 ## Functional Requirements
-- Receive readings from gateway via authenticated HTTP POST
+- Receive temperature readings from gateway via authenticated HTTP POST
+  - Get the latest temperature reading.
+  - Get the temperature readings for the latest 24 hour, including the higest and the lowest reading.
+  - Get the average temperature readings (average, lowest, highest) pr. day for the latest 30 days.
 - Validate and store readings (device ID, timestamp, value)
 - Prevent duplicate records (idempotency)
 - Endpoints for:
@@ -31,3 +34,5 @@ This document outlines the technical specifications and requirements for the Bea
 - Low-latency API responses for real-time display
 - Secure (HTTPS, authentication for gateway)
 - Comprehensive logging and error reporting
+- Use file-scoped namespaces
+- Use Entity Framework to access CosmosDB through the Repository pattern

@@ -13,7 +13,7 @@ public abstract class Reading
     /// <summary>
     /// The unique identifier of the device.
     /// </summary>
-    public required int DeviceId { get; set; }
+    public required Guid DeviceId { get; set; }
 
     /// <summary>
     /// The timestamp when the reading was recorded.
