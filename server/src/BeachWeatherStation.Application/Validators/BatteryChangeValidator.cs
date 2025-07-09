@@ -6,10 +6,7 @@ public class BatteryChangeValidator
 {
     public ValidationResult Validate(CreateBatteryChangeDto dto)
     {
-        if (dto.DeviceId == default)
-            return ValidationResult.Invalid("DeviceId is required.");
-        if (dto.CreatedAt == default)
-            return ValidationResult.Invalid("Timestamp is required.");
+        // No buisiness rules defined yet, so we return valid by default.
         return ValidationResult.Valid();
     }
 }

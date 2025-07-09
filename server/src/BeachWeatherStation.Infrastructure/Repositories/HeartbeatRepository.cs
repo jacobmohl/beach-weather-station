@@ -3,13 +3,36 @@ using BeachWeatherStation.Domain.Interfaces;
 using BeachWeatherStation.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace BeachWeatherStation.Infrastructure.Repositories;
+
+namespace BeachWeatherStation.Infrastructure.Repositories
+{
 
 /// <summary>
 /// Repository for managing heartbeat events in the database.
 /// </summary>
 public class HeartbeatRepository : IHeartbeatRepository
 {
+    /// <summary>
+    /// Get the latest heartbeat event for a specific device.
+    /// </summary>
+    public async Task<Heartbeat?> GetLatestHeartbeatAsync(Guid deviceId)
+    {
+        return await _dbContext.Heartbeats.AsNoTracking()
+            .Where(x => x.DeviceId == deviceId)
+            .OrderByDescending(x => x.CreatedAt)
+            .FirstOrDefaultAsync();
+    }
+
+    /// <summary>
+    /// Get all heartbeat events for a device in the last 24 hours.
+    /// </summary>
+    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(Guid deviceId)
+    {
+        var since = DateTime.UtcNow.AddHours(-24);
+        return await _dbContext.Heartbeats.AsNoTracking()
+            .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
+            .ToListAsync();
+    }
     // EF Core DbContext for data access
     private readonly BeachWeatherStationDbContext _dbContext;
     /// <summary>
@@ -34,8 +57,23 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// </summary>
     public async Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(Guid deviceId)
     {
-        return await _dbContext.Heartbeats.AsNoTracking().Where(x => x.Id == deviceId)
+        return await _dbContext.Heartbeats.AsNoTracking().Where(x => x.DeviceId == deviceId)
             .ToListAsync();
+    }
+    /// <summary>
+    /// Get all heartbeat events in the database.
+    /// </summary>
+    public async Task<IEnumerable<Heartbeat>> GetAllHeartbeatsAsync()
+    {
+        return await _dbContext.Heartbeats.AsNoTracking().ToListAsync();
+    }
+
+    /// <summary>
+    /// Check if a heartbeat exists by its ID.
+    /// </summary>
+    public async Task<bool> HeartbeatExistsAsync(Guid heartbeatId)
+    {
+        return await _dbContext.Heartbeats.AsNoTracking().AnyAsync(x => x.Id == heartbeatId);
     }
 
     /// <summary>
@@ -71,4 +109,5 @@ public class HeartbeatRepository : IHeartbeatRepository
             await _dbContext.SaveChangesAsync();
         }
     }
+}
 }

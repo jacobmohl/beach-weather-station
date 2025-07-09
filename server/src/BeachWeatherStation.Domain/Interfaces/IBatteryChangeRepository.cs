@@ -38,4 +38,18 @@ public interface IBatteryChangeRepository
     /// </summary>
     /// <param name="batteryChangeId">The unique identifier of the battery change.</param>
     Task DeleteBatteryChangeAsync(Guid batteryChangeId);
+    
+    /// <summary>
+    /// Retrieves the latest battery change for a specific device.
+    /// </summary>
+    /// <param name="deviceId">The unique identifier of the device.</param>
+    /// <returns>The most recent battery change or null if none exist.</returns>
+    Task<BatteryChange?> GetLatestBatteryChangeAsync(Guid deviceId);
+    
+    /// <summary>
+    /// Retrieves battery changes from the last 24 hours for a specific device.
+    /// </summary>
+    /// <param name="deviceId">The unique identifier of the device.</param>
+    /// <returns>A collection of battery changes from the last 24 hours.</returns>
+    Task<IEnumerable<BatteryChange>> GetBatteryChangesLast24hAsync(Guid deviceId);
 }

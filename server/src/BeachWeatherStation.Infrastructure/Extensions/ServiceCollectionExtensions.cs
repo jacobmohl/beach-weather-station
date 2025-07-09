@@ -15,12 +15,22 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // Register Cosmos DB context
-        services.AddDbContext<BeachWeatherStationDbContext>(options =>
-            options.UseCosmos(
-                configuration["CosmosDb:AccountEndpoint"],
-                configuration["CosmosDb:AccountKey"],
-                databaseName: configuration["CosmosDb:DatabaseName"]));
+        // Register DbContext: Use InMemory for local development, Cosmos DB otherwise
+        var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+        if (useInMemory)
+        {
+            services.AddDbContext<BeachWeatherStationDbContext>(options =>
+                options.UseInMemoryDatabase("BeachWeatherStationDb"));
+        }
+        else
+        {
+            services.AddDbContext<BeachWeatherStationDbContext>(options =>
+                options.UseCosmos(
+                    configuration["CosmosDb:AccountEndpoint"] ?? throw new ArgumentNullException("CosmosDb:AccountEndpoint"),
+                    configuration["CosmosDb:AccountKey"] ?? throw new ArgumentNullException("CosmosDb:AccountKey"),
+                    databaseName: configuration["CosmosDb:DatabaseName"] ?? throw new ArgumentNullException("CosmosDb:DatabaseName")
+                ));
+        }
 
         // Register repositories and services
         services.AddScoped<IBatteryChangeRepository, BatteryChangeRepository>();

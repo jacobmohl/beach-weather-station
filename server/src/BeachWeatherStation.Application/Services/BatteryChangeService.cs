@@ -32,26 +32,26 @@ public class BatteryChangeService
         return true;
     }
 
-    // public async Task<BatteryChangeDto?> GetLatestBatteryChangeAsync(string deviceId)
-    // {
-    //     var entity = await _batteryChangeRepository.GetLatestAsync(deviceId);
-    //     if (entity == null) return null;
-    //     return new BatteryChangeDto
-    //     {
-    //         DeviceId = entity.DeviceId,
-    //         Timestamp = entity.Timestamp,
-    //         BatteryLevel = entity.BatteryLevel
-    //     };
-    // }
+    public async Task<BatteryChangeDto?> GetLatestBatteryChangeAsync(Guid deviceId)
+    {
+        var entity = await _batteryChangeRepository.GetLatestBatteryChangeAsync(deviceId);
+        if (entity == null) return null;
+        
+        return new BatteryChangeDto
+        {
+            DeviceId = entity.DeviceId,
+            CreatedAt = entity.CreatedAt
+        };
+    }
 
-    // public async Task<IReadOnlyList<BatteryChangeDto>> GetBatteryChangesLast24hAsync(string deviceId)
-    // {
-    //     var entities = await _batteryChangeRepository.GetLast24hAsync(deviceId);
-    //     return entities.Select(e => new BatteryChangeDto
-    //     {
-    //         DeviceId = e.DeviceId,
-    //         Timestamp = e.Timestamp,
-    //         BatteryLevel = e.BatteryLevel
-    //     }).ToList();
-    // }
+    public async Task<IReadOnlyList<BatteryChangeDto>> GetBatteryChangesLast24hAsync(Guid deviceId)
+    {
+        var entities = await _batteryChangeRepository.GetBatteryChangesLast24hAsync(deviceId);
+        
+        return entities.Select(e => new BatteryChangeDto
+        {
+            DeviceId = e.DeviceId,
+            CreatedAt = e.CreatedAt
+        }).ToList();
+    }
 }

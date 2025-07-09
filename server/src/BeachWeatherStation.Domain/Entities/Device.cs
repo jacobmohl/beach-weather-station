@@ -27,7 +27,7 @@ public class Device
 /// </summary>
 public enum DeviceStatus
 {
-    Active,
-    InActive,
+    Online,
+    Offline,
     Maintenance
 }

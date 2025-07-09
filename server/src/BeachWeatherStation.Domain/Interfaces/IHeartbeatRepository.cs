@@ -38,4 +38,18 @@ public interface IHeartbeatRepository
     /// </summary>
     /// <param name="heartbeatId">The unique identifier of the heartbeat.</param>
     Task DeleteHeartbeatAsync(Guid heartbeatId);
+    
+    /// <summary>
+    /// Retrieves the latest heartbeat for a specific device.
+    /// </summary>
+    /// <param name="deviceId">The unique identifier of the device.</param>
+    /// <returns>The most recent heartbeat or null if none exist.</returns>
+    Task<Heartbeat?> GetLatestHeartbeatAsync(Guid deviceId);
+    
+    /// <summary>
+    /// Retrieves heartbeats from the last 24 hours for a specific device.
+    /// </summary>
+    /// <param name="deviceId">The unique identifier of the device.</param>
+    /// <returns>A collection of heartbeats from the last 24 hours.</returns>
+    Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(Guid deviceId);
 }

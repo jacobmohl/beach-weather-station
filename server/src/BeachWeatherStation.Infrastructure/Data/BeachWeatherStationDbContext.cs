@@ -21,5 +21,15 @@ public class BeachWeatherStationDbContext : DbContext
         modelBuilder.Entity<Device>();
         modelBuilder.Entity<Heartbeat>();
         modelBuilder.Entity<TemperatureReading>();
+
+        // Seed the database with a default device
+        modelBuilder.Entity<Device>().HasData(
+            new Device
+            {
+                Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                Name = "Fynshoved",
+                Status = DeviceStatus.Online
+            });
+        //base.OnModelCreating(modelBuilder);
     }
 }

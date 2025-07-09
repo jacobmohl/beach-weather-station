@@ -73,4 +73,28 @@ public class BatteryChangeRepository : IBatteryChangeRepository
             await _dbContext.SaveChangesAsync();
         }
     }
+
+    /// <summary>
+    /// Retrieves the latest battery change for a specific device.
+    /// </summary>
+    public async Task<BatteryChange?> GetLatestBatteryChangeAsync(Guid deviceId)
+    {
+        return await _dbContext.BatteryChanges
+            .AsNoTracking()
+            .Where(x => x.DeviceId == deviceId)
+            .OrderByDescending(x => x.CreatedAt)
+            .FirstOrDefaultAsync();
+    }
+
+    /// <summary>
+    /// Retrieves battery changes from the last 24 hours for a specific device.
+    /// </summary>
+    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesLast24hAsync(Guid deviceId)
+    {
+        var since = DateTime.UtcNow.AddHours(-24);
+        return await _dbContext.BatteryChanges
+            .AsNoTracking()
+            .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
+            .ToListAsync();
+    }
 }

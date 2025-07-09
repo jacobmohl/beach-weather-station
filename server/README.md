@@ -18,13 +18,13 @@ This document outlines the technical specifications and requirements for the Bea
 ## Functional Requirements
 - Receive temperature readings from gateway via authenticated HTTP POST
 
-- Validate and store readings (device ID, timestamp, value)
+- Validate and store water temperature readings (device ID, created at timestamp, temperature and signal strengh)
 - Prevent duplicate records (idempotency)
 - Endpoints for:
-  - Ingesting new readings
-  - Get the latest temperature reading.
-  - Get the temperature readings for the latest 24 hour, including the higest and the lowest reading.
-  - Get the average temperature readings (average, lowest, highest) pr. day for the latest 30 days.  
+  - Ingesting new water temperature readings inclusive signal strengh
+  - Get the latest water temperature reading.
+  - Get the water temperature readings for the latest 24 hour, including the higest and the lowest reading.
+  - Get the average water temperature readings (average, lowest, highest) pr. day for the latest 30 days.  
   - Ingesting heartbeats from gateway
   - Ingesting battery change notifications from app/management
   - Retrieving latest heatbeats and battery changes
@@ -64,14 +64,19 @@ server/
     BeachWeatherStation.Infrastructure/  # Infrastructure/data access
     BeachWeatherStation.Worker/          # Azure Functions host/API endpoints
 ```
-
+### Example Use Case: Ingesting a Reading
+1. API endpoint receives a POST request with a new water temperature reading including signal strengh.
+2. The request is mapped to a `CreateTemperatureReadingDto`.
+3. `ReadingService` validates the DTO using `TemperatureReadingValidator`.
+4. If valid, the service interacts with the domain and repository to persist the reading.
+5. The service returns a result or error to the API endpoint.
 
 ### BeachWeatherStation.Domain
 
 Defines the core business logic and domain model for the solution. This folder contains:
-- **Entities/**: Classes representing key concepts such as `Device`, `Reading`, `TemperatureReading`, `Heartbeat`, and `BatteryChange`.
+- **Entities/**: Classes representing key concepts such as `Device`, `TemperatureReading`, `Heartbeat`, and `BatteryChange`.
 - **Aggregates/**: Aggregate roots, e.g., `DeviceAggregate`, that encapsulate domain logic and relationships.
-- **Events/**: Domain events like `ReadingReceivedEvent` and `HeartbeatReceivedEvent` for decoupled business logic.
+- **Events/**: Domain events like `TemperatureReadingReceivedEvent` and `HeartbeatReceivedEvent` for decoupled business logic.
 - **Interfaces/**: Repository and service interfaces (e.g., `IDeviceRepository`, `IAlertService`) that abstract data access and domain services.
 - **Services/**: Domain services implementing business rules, such as validation and alerting.
 This layer is independent of infrastructure and frameworks, ensuring the core logic is reusable and testable.

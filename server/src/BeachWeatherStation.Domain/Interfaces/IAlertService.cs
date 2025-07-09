@@ -8,9 +8,10 @@ namespace BeachWeatherStation.Domain.Interfaces;
 public interface IAlertService
 {
     /// <summary>
-    /// Notify about a delayed reading for a device.
+    /// Sends an alert when a device hasn't sent readings for an extended period.
     /// </summary>
-    /// <param name="deviceId">The ID of the device.</param>
-    /// <param name="lastReadingTime">The time of the last reading.</param>
-    void NotifyDelayedReading(int deviceId, DateTime lastReadingTime);
+    /// <param name="deviceId">The ID of the device that has delayed readings.</param>
+    /// <param name="lastReadingTime">The timestamp of the last reading received from the device.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task NotifyDelayedReading(Guid deviceId, DateTime? lastReadingTime);
 }

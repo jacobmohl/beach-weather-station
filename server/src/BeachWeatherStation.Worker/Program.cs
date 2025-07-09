@@ -2,18 +2,31 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using BeachWeatherStation.Application;
+using BeachWeatherStation.Infrastructure.Extensions;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using BeachWeatherStation.Worker.Configuration;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
     .ConfigureFunctionsWorkerDefaults(builder => {}, options =>
     {
-        //options.EnableUserCodeException = true;
+        // User code exception handling is now the default behavior
     })    
     .ConfigureServices(services =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        services.AddMvc(); // Add MVC services for handling HTTP requests;
+
+        // Add MVC services with JSON options for handling HTTP requests
+        services.AddMvc();
+        
+        // Register application services
+        services.AddApplicationServices();
+        
+        // Register infrastructure services (repositories, DB context, etc.)
+        services.AddInfrastructure(EnvironmentConfiguration.GetConfiguration());
     })
     .ConfigureLogging(logging =>
     {
@@ -26,9 +39,11 @@ var host = new HostBuilder()
             }
         });     
            
-        // Disable IHttpClientFactory Informational logs.
-        // Note -- you can also remove the handler that does the logging: https://github.com/aspnet/HttpClientFactory/issues/196#issuecomment-432755765 
-        //logging.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
+        // Configure appropriate logging levels
+        logging.AddFilter("Microsoft", LogLevel.Warning);
+        logging.AddFilter("System", LogLevel.Warning);
+        logging.AddFilter("BeachWeatherStation", LogLevel.Information);
     })    
     .Build();
+    
 host.Run();

@@ -16,39 +16,42 @@ public class HeartbeatService
         _validator = validator;
     }
 
-    // public async Task<bool> IngestHeartbeatAsync(CreateHeartbeatDto dto)
-    // {
-    //     var validationResult = _validator.Validate(dto);
-    //     if (!validationResult.IsValid)
-    //         return false;
+    public async Task<bool> IngestHeartbeatAsync(CreateHeartbeatDto dto)
+    {
+        var validationResult = _validator.Validate(dto);
+        if (!validationResult.IsValid)
+            return false;
 
-    //     var entity = new Heartbeat
-    //     {
-    //         DeviceId = dto.DeviceId,
-    //         CreatedAt = dto.CreatedAt
-    //     };
-    //     await _heartbeatRepository.AddAsync(entity);
-    //     return true;
-    // }
+        var entity = new Heartbeat
+        {
+            Id = Guid.NewGuid(),
+            DeviceId = dto.DeviceId,
+            CreatedAt = dto.CreatedAt
+        };
+        await _heartbeatRepository.AddHeartbeatAsync(entity);
+        return true;
+    }
 
-    // public async Task<HeartbeatDto?> GetLatestHeartbeatAsync(string deviceId)
-    // {
-    //     var entity = await _heartbeatRepository.GetLatestAsync(deviceId);
-    //     if (entity == null) return null;
-    //     return new HeartbeatDto
-    //     {
-    //         DeviceId = entity.DeviceId,
-    //         CreatedAt = entity.CreatedAt
-    //     };
-    // }
+    public async Task<HeartbeatDto?> GetLatestHeartbeatAsync(Guid deviceId)
+    {
+        var entity = await _heartbeatRepository.GetLatestHeartbeatAsync(deviceId);
+        if (entity == null) return null;
+        
+        return new HeartbeatDto
+        {
+            DeviceId = entity.DeviceId,
+            CreatedAt = entity.CreatedAt
+        };
+    }
 
-    // public async Task<IReadOnlyList<HeartbeatDto>> GetHeartbeatsLast24hAsync(string deviceId)
-    // {
-    //     var entities = await _heartbeatRepository.GetLast24hAsync(deviceId);
-    //     return entities.Select(e => new HeartbeatDto
-    //     {
-    //         DeviceId = e.DeviceId,
-    //         Timestamp = e.Timestamp
-    //     }).ToList();
-    // }
+    public async Task<IReadOnlyList<HeartbeatDto>> GetHeartbeatsLast24hAsync(Guid deviceId)
+    {
+        var entities = await _heartbeatRepository.GetHeartbeatsLast24hAsync(deviceId);
+        
+        return entities.Select(e => new HeartbeatDto
+        {
+            DeviceId = e.DeviceId,
+            CreatedAt = e.CreatedAt
+        }).ToList();
+    }
 }
