@@ -13,5 +13,5 @@ public interface IAlertService
     /// <param name="deviceId">The ID of the device that has delayed readings.</param>
     /// <param name="lastReadingTime">The timestamp of the last reading received from the device.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task NotifyDelayedReading(Guid deviceId, DateTime? lastReadingTime);
+    Task NotifyDelayedReading(string deviceId, DateTime? lastReadingTime);
 }

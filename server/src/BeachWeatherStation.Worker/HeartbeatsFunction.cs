@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.Json;
 using BeachWeatherStation.Application.DTOs;
 using BeachWeatherStation.Application.Services;
-using System.IO;
+using FromBodyAttribute = Microsoft.Azure.Functions.Worker.Http.FromBodyAttribute;
 
 namespace BeachWeatherStation.Worker;
 
@@ -14,7 +14,6 @@ public class HeartbeatsFunction
 {
     private readonly ILogger<HeartbeatsFunction> _logger;
     private readonly HeartbeatService _heartbeatService;
-    private readonly JsonSerializerOptions _jsonOptions;
 
     public HeartbeatsFunction(
         ILogger<HeartbeatsFunction> logger,
@@ -22,23 +21,17 @@ public class HeartbeatsFunction
     {
         _logger = logger;
         _heartbeatService = heartbeatService;
-        _jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true
-        };
     }
 
     [Function("IngestHeartbeat")]
     public async Task<IActionResult> IngestHeartbeat(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "heartbeats")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v2/heartbeats")] HttpRequest req,
+        [FromBody] CreateHeartbeatDto heartbeatDto)
     {
         _logger.LogInformation("Processing heartbeat ingestion request");
 
         try
         {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var heartbeatDto = JsonSerializer.Deserialize<CreateHeartbeatDto>(requestBody, _jsonOptions);
 
             if (heartbeatDto == null)
             {
@@ -66,8 +59,8 @@ public class HeartbeatsFunction
 
     [Function("GetLatestHeartbeat")]
     public async Task<IActionResult> GetLatestHeartbeat(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "heartbeats/latest/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/heartbeats/latest/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting latest heartbeat for device {DeviceId}", deviceId);
 
@@ -94,8 +87,8 @@ public class HeartbeatsFunction
 
     [Function("GetHeartbeatsLast24h")]
     public async Task<IActionResult> GetHeartbeatsLast24h(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "heartbeats/last24h/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/heartbeats/last24h/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting heartbeats for last 24h for device {DeviceId}", deviceId);
 

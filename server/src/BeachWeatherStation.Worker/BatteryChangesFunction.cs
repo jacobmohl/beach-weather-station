@@ -24,7 +24,7 @@ public class BatteryChangesFunction
 
     [Function("IngestBatteryChange")]
     public async Task<IActionResult> IngestBatteryChange(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "batterychanges")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v2/batterychanges")] HttpRequest req,
         [FromBody] CreateBatteryChangeDto batteryChangeDto)
     {
         _logger.LogInformation("Processing battery change ingestion request");
@@ -56,8 +56,8 @@ public class BatteryChangesFunction
 
     [Function("GetLatestBatteryChange")]
     public async Task<IActionResult> GetLatestBatteryChange(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "batterychanges/latest/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/batterychanges/latest/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting latest battery change for device {DeviceId}", deviceId);
 
@@ -83,8 +83,8 @@ public class BatteryChangesFunction
 
     [Function("GetBatteryChangesLast24h")]
     public async Task<IActionResult> GetBatteryChangesLast24h(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "batterychanges/last24h/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/batterychanges/last24h/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting battery changes for last 24h for device {DeviceId}", deviceId);
 

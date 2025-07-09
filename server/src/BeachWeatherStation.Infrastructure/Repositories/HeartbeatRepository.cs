@@ -15,7 +15,7 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// <summary>
     /// Get the latest heartbeat event for a specific device.
     /// </summary>
-    public async Task<Heartbeat?> GetLatestHeartbeatAsync(Guid deviceId)
+    public async Task<Heartbeat?> GetLatestHeartbeatAsync(string deviceId)
     {
         return await _dbContext.Heartbeats.AsNoTracking()
             .Where(x => x.DeviceId == deviceId)
@@ -26,7 +26,7 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// <summary>
     /// Get all heartbeat events for a device in the last 24 hours.
     /// </summary>
-    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(Guid deviceId)
+    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(string deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
         return await _dbContext.Heartbeats.AsNoTracking()
@@ -55,7 +55,7 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// <summary>
     /// Get all heartbeat events for a specific device.
     /// </summary>
-    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(Guid deviceId)
+    public async Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(string deviceId)
     {
         return await _dbContext.Heartbeats.AsNoTracking().Where(x => x.DeviceId == deviceId)
             .ToListAsync();

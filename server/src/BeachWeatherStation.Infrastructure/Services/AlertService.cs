@@ -21,10 +21,10 @@ public class AlertService : IAlertService
     /// <summary>
     /// Notify about a delayed reading for a device.
     /// </summary>
-    public async Task NotifyDelayedReading(Guid deviceId, DateTime? lastReadingTime)
+    public async Task NotifyDelayedReading(string deviceId, DateTime? lastReadingTime)
     {
         // Example: Log a warning. Replace with email/webhook/Azure Monitor as needed.
         await Task.Yield();
-        _logger.LogWarning($"Device {deviceId} has a delayed reading. Last reading at {lastReadingTime}.");
+        _logger.LogWarning($"Device {deviceId} has a delayed reading. Last reading at {lastReadingTime}.", deviceId, lastReadingTime);
     }
 }

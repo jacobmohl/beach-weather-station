@@ -13,7 +13,7 @@ public class Heartbeat
     /// <summary>
     /// The unique identifier of the device.
     /// </summary>
-    public Guid DeviceId { get; set; }
+    public required string DeviceId { get; set; }
 
     /// <summary>
     /// The timestamp when the heartbeat was sent.

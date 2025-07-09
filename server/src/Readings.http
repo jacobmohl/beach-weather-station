@@ -1,0 +1,31 @@
+### Ingest a new temperature reading
+POST http://localhost:7071/v2/readings
+Content-Type: application/json
+
+
+{
+  "deviceId": "Sensor1",
+  "temperature": 18.56,
+  "signalStrength": -93
+}
+
+### Get the latest temperature reading for a device
+GET http://localhost:7071/v2/readings/latest/Sensor1
+
+### Get the latest temperature reading for a device
+GET http://localhost:7071/v2/readings/latest
+
+### Get temperature readings for the last 24 hours for a device
+GET http://localhost:7071/v2/readings/last24h/Sensor1
+
+### Get temperature readings for the last 24 hours for a device
+GET http://localhost:7071/v2/readings/last24h/
+
+
+### Get daily temperature stats for the last 30 days for a device
+GET http://localhost:7071/v2/readings/dailystats/Sensor1
+
+### Get daily temperature stats for the last 30 days for a device
+GET http://localhost:7071/v2/readings/dailystats/
+
+

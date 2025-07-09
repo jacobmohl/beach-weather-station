@@ -9,7 +9,7 @@ public class Device
     /// <summary>
     /// The unique identifier of the device.
     /// </summary>
-    public required Guid Id { get; set; }
+    public required string Id { get; set; }
 
     /// <summary>
     /// The name of the device.

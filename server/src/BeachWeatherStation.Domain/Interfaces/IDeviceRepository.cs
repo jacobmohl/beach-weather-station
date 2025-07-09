@@ -12,7 +12,7 @@ public interface IDeviceRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>The device details.</returns>
-    Task<Device?> GetDeviceByIdAsync(Guid deviceId);
+    Task<Device?> GetDeviceByIdAsync(string deviceId);
 
     /// <summary>
     /// Retrieves all devices in the system.
@@ -36,5 +36,5 @@ public interface IDeviceRepository
     /// Deletes a device record by its unique identifier.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
-    Task DeleteDeviceAsync(Guid deviceId);
+    Task DeleteDeviceAsync(string deviceId);
 }

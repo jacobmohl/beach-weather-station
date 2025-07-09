@@ -23,7 +23,7 @@ public class DeviceRepository : IDeviceRepository
     /// <summary>
     /// Get a device by its string ID.
     /// </summary>
-    public async Task<Device?> GetDeviceByIdAsync(Guid deviceId)
+    public async Task<Device?> GetDeviceByIdAsync(string deviceId)
     {
         var doc = await _dbContext.Devices.AsNoTracking().FirstOrDefaultAsync(x => x.Id == deviceId);
         return doc;
@@ -63,7 +63,7 @@ public class DeviceRepository : IDeviceRepository
         }
     }
 
-    public async Task DeleteDeviceAsync(Guid deviceId)
+    public async Task DeleteDeviceAsync(string deviceId)
     {
         var doc = await _dbContext.Devices.FirstOrDefaultAsync(x => x.Id == deviceId);
         if (doc != null)

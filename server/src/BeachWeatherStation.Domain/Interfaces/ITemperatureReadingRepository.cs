@@ -20,7 +20,7 @@ public interface ITemperatureReadingRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A collection of temperature readings.</returns>
-    Task<IEnumerable<TemperatureReading>> GetReadingsByDeviceIdAsync(Guid deviceId);
+    Task<IEnumerable<TemperatureReading>> GetReadingsByDeviceIdAsync(string deviceId);
 
     /// <summary>
     /// Adds a new temperature reading record.
@@ -45,19 +45,19 @@ public interface ITemperatureReadingRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A tuple with latest, highest, and lowest readings in the last 24 hours.</returns>
-    Task<TemperatureReading?> GetLatestReadingAsync(Guid deviceId);
+    Task<TemperatureReading?> GetLatestReadingAsync(string deviceId);
 
     /// <summary>
     /// Gets all temperature readings for the last 24 hours for a device, including the highest and lowest.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A tuple with all readings, highest, and lowest in the last 24 hours.</returns>
-    Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(Guid deviceId);
+    Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(string deviceId);
 
     /// <summary>
     /// Gets daily average, lowest, and highest temperature readings for the last 30 days for a device.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A collection of daily stats (date, avg, min, max).</returns>
-    Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(Guid deviceId);
+    Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(string deviceId);
 }

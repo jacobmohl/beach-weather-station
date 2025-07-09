@@ -32,26 +32,16 @@ public class BatteryChangeService
         return true;
     }
 
-    public async Task<BatteryChangeDto?> GetLatestBatteryChangeAsync(Guid deviceId)
+    public async Task<BatteryChange?> GetLatestBatteryChangeAsync(string deviceId)
     {
         var entity = await _batteryChangeRepository.GetLatestBatteryChangeAsync(deviceId);
         if (entity == null) return null;
-        
-        return new BatteryChangeDto
-        {
-            DeviceId = entity.DeviceId,
-            CreatedAt = entity.CreatedAt
-        };
+        return entity;
     }
 
-    public async Task<IReadOnlyList<BatteryChangeDto>> GetBatteryChangesLast24hAsync(Guid deviceId)
+    public async Task<IReadOnlyList<BatteryChange>> GetBatteryChangesLast24hAsync(string deviceId)
     {
         var entities = await _batteryChangeRepository.GetBatteryChangesLast24hAsync(deviceId);
-        
-        return entities.Select(e => new BatteryChangeDto
-        {
-            DeviceId = e.DeviceId,
-            CreatedAt = e.CreatedAt
-        }).ToList();
+        return entities.ToList();
     }
 }

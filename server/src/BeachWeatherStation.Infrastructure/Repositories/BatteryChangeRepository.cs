@@ -32,7 +32,7 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// <summary>
     /// Get all battery change events for a specific device.
     /// </summary>
-    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesByDeviceIdAsync(Guid deviceId)
+    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesByDeviceIdAsync(string deviceId)
     {
         return await _dbContext.BatteryChanges
             .AsNoTracking()
@@ -77,7 +77,7 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// <summary>
     /// Retrieves the latest battery change for a specific device.
     /// </summary>
-    public async Task<BatteryChange?> GetLatestBatteryChangeAsync(Guid deviceId)
+    public async Task<BatteryChange?> GetLatestBatteryChangeAsync(string deviceId)
     {
         return await _dbContext.BatteryChanges
             .AsNoTracking()
@@ -89,7 +89,7 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// <summary>
     /// Retrieves battery changes from the last 24 hours for a specific device.
     /// </summary>
-    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesLast24hAsync(Guid deviceId)
+    public async Task<IEnumerable<BatteryChange>> GetBatteryChangesLast24hAsync(string deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
         return await _dbContext.BatteryChanges

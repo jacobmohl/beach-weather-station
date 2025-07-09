@@ -32,26 +32,17 @@ public class HeartbeatService
         return true;
     }
 
-    public async Task<HeartbeatDto?> GetLatestHeartbeatAsync(Guid deviceId)
+    public async Task<Heartbeat?> GetLatestHeartbeatAsync(string deviceId)
     {
         var entity = await _heartbeatRepository.GetLatestHeartbeatAsync(deviceId);
         if (entity == null) return null;
-        
-        return new HeartbeatDto
-        {
-            DeviceId = entity.DeviceId,
-            CreatedAt = entity.CreatedAt
-        };
+        return entity;
     }
 
-    public async Task<IReadOnlyList<HeartbeatDto>> GetHeartbeatsLast24hAsync(Guid deviceId)
+    public async Task<IReadOnlyList<Heartbeat>> GetHeartbeatsLast24hAsync(string deviceId)
     {
         var entities = await _heartbeatRepository.GetHeartbeatsLast24hAsync(deviceId);
         
-        return entities.Select(e => new HeartbeatDto
-        {
-            DeviceId = e.DeviceId,
-            CreatedAt = e.CreatedAt
-        }).ToList();
+        return entities.ToList();
     }
 }

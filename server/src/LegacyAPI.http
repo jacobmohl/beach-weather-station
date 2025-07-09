@@ -1,0 +1,65 @@
+# Legacy API Endpoints Testing
+
+### Legacy Temperature Reading
+POST http://localhost:7071/api/readings
+Content-Type: application/json
+
+{
+   "sensorType":"WaterTemperature",
+   "unit": "C",
+   "reading": 18.02 ,
+   "sensorId": "Sensor1",
+   "signalStrength": 82
+}
+
+### Legacy Heartbeat
+POST http://localhost:7071/api/readings
+Content-Type: application/json
+
+{
+  "sensorType":"Heatbeat",
+  "unit":"Count",
+  "reading":1,
+  "sensorId":"Sensor1"
+}
+
+### Test another sensor
+POST http://localhost:7071/api/readings
+Content-Type: application/json
+
+{
+   "sensorType":"WaterTemperature",
+   "unit": "C",
+   "reading": 22.5,
+   "sensorId": "Sensor2",
+   "signalStrength": 75
+}
+
+### Test another heartbeat
+POST http://localhost:7071/api/readings
+Content-Type: application/json
+
+{
+  "sensorType":"Heatbeat",
+  "unit":"Count",
+  "reading":1,
+  "sensorId":"Sensor2"
+}
+
+### Test Sensor Error
+POST http://localhost:7071/api/readings
+Content-Type: application/json
+
+{
+  "id": "78470efa-91ae-450e-9c3e-55119cfd0240",
+  "sensorType": "SensorError",
+  "unit": "Error",
+  "reading": 0,
+  "sensorId": "Sensor1",
+  "capturedAt": "2025-07-08T20:37:01.5019778Z",
+  "meta": {
+    "json": "{\"sensorType\":\"WaterTemperature\",\"unit\":\"C\",\"reading\":4�F�R��q�b��67�0��\\/\u0012���ʐ�DwRg�t\nsd�\u0013�'pә�{�\u0006\u0005\u0007�-8?\"Q�FS����$k\u0004���r�\u0018\b�{*~��>��W��ђ�[y\u001d�\u001b}%\u000e�6�C8�\u0003\\�dFl͋7CB\u0006ߖ�Z,\"sensorId\":\"Sensor1\",\"signalStrength\": -101}"
+  },
+  "signalStrength": null,
+  "timeToLive": 604800
+}

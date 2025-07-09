@@ -19,7 +19,7 @@ public interface IHeartbeatRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A collection of heartbeats.</returns>
-    Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(Guid deviceId);
+    Task<IEnumerable<Heartbeat>> GetHeartbeatsByDeviceIdAsync(string deviceId);
 
     /// <summary>
     /// Adds a new heartbeat record.
@@ -44,12 +44,12 @@ public interface IHeartbeatRepository
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>The most recent heartbeat or null if none exist.</returns>
-    Task<Heartbeat?> GetLatestHeartbeatAsync(Guid deviceId);
+    Task<Heartbeat?> GetLatestHeartbeatAsync(string deviceId);
     
     /// <summary>
     /// Retrieves heartbeats from the last 24 hours for a specific device.
     /// </summary>
     /// <param name="deviceId">The unique identifier of the device.</param>
     /// <returns>A collection of heartbeats from the last 24 hours.</returns>
-    Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(Guid deviceId);
+    Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(string deviceId);
 }

@@ -33,9 +33,9 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
     /// <summary>
     /// Get all temperature readings for a specific device.
     /// </summary>
-    public async Task<IEnumerable<TemperatureReading>> GetReadingsByDeviceIdAsync(Guid deviceId)
+    public async Task<IEnumerable<TemperatureReading>> GetReadingsByDeviceIdAsync(string deviceId)
     {
-        return await _dbContext.TemperatureReadings.AsNoTracking().Where(x => x.Id == deviceId)
+        return await _dbContext.TemperatureReadings.AsNoTracking().Where(x => x.DeviceId == deviceId)
             .ToListAsync();
     }
 
@@ -75,7 +75,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
     }
 
 
-    public async Task<TemperatureReading?> GetLatestReadingAsync(Guid deviceId)
+    public async Task<TemperatureReading?> GetLatestReadingAsync(string deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
         var reading = await _dbContext.TemperatureReadings.AsNoTracking()
@@ -85,7 +85,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
         return reading;
     }
 
-    public async Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(Guid deviceId)
+    public async Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(string deviceId)
     {
         var since = DateTime.UtcNow.AddHours(-24);
         var readings = await _dbContext.TemperatureReadings.AsNoTracking()
@@ -97,7 +97,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
         return (readings, highest, lowest);
     }
 
-    public async Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(Guid deviceId)
+    public async Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(string deviceId)
     {
         var since = DateTime.UtcNow.Date.AddDays(-30);
         var readings = await _dbContext.TemperatureReadings.AsNoTracking()

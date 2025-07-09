@@ -37,8 +37,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDeviceRepository, DeviceRepository>();
         services.AddScoped<IHeartbeatRepository, HeartbeatRepository>();
         services.AddScoped<ITemperatureReadingRepository, TemperatureReadingRepository>();
-
         services.AddScoped<Services.AlertService>();
+        
         return services;
     }
 }

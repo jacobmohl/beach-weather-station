@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.Json;
 using BeachWeatherStation.Application.DTOs;
 using BeachWeatherStation.Application.Services;
-using System.IO;
+using FromBodyAttribute = Microsoft.Azure.Functions.Worker.Http.FromBodyAttribute;
 
 namespace BeachWeatherStation.Worker;
 
@@ -14,7 +14,6 @@ public class ReadingsFunction
 {
     private readonly ILogger<ReadingsFunction> _logger;
     private readonly TemperatureReadingService _readingService;
-    private readonly JsonSerializerOptions _jsonOptions;
 
     public ReadingsFunction(
         ILogger<ReadingsFunction> logger,
@@ -22,23 +21,17 @@ public class ReadingsFunction
     {
         _logger = logger;
         _readingService = readingService;
-        _jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true
-        };
     }
 
     [Function("IngestReading")]
     public async Task<IActionResult> IngestReading(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "readings")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v2/readings")] HttpRequest req,
+        [FromBody] CreateTemperatureReadingDto readingDto)
     {
         _logger.LogInformation("Processing temperature reading ingestion request");
 
         try
         {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var readingDto = JsonSerializer.Deserialize<CreateTemperatureReadingDto>(requestBody, _jsonOptions);
 
             if (readingDto == null)
             {
@@ -65,8 +58,8 @@ public class ReadingsFunction
 
     [Function("GetLatestReading")]
     public async Task<IActionResult> GetLatestReading(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "readings/latest/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/readings/latest/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting latest temperature reading for device {DeviceId}", deviceId);
 
@@ -92,8 +85,8 @@ public class ReadingsFunction
 
     [Function("GetReadingsLast24h")]
     public async Task<IActionResult> GetReadingsLast24h(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "readings/last24h/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/readings/last24h/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting temperature readings for last 24h for device {DeviceId}", deviceId);
 
@@ -120,15 +113,15 @@ public class ReadingsFunction
 
     [Function("GetDailyStats")]
     public async Task<IActionResult> GetDailyStats(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "readings/dailystats/{deviceId}")] HttpRequest req,
-        Guid deviceId)
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v2/readings/dailystats/{deviceId?}")] HttpRequest req,
+        string deviceId = "Sensor1")
     {
         _logger.LogInformation("Getting daily temperature stats for device {DeviceId}", deviceId);
 
         try
         {
             var dailyStats = await _readingService.GetDailyStatsLast30DaysAsync(deviceId);
-            
+
             _logger.LogInformation("Successfully retrieved daily temperature stats");
             return new OkObjectResult(dailyStats);
         }

@@ -39,59 +39,22 @@ public class TemperatureReadingService
         return true;
     }
 
-    public async Task<TemperatureReadingDto?> GetLatestReadingAsync(Guid deviceId)
+    public async Task<TemperatureReading?> GetLatestReadingAsync(string deviceId)
     {
         var entity = await _readingRepository.GetLatestReadingAsync(deviceId);
         if (entity == null) return null;
-        return new TemperatureReadingDto
-        {
-            DeviceId = entity.DeviceId,
-            CreatedAt = entity.CreatedAt,
-            Temperature = entity.Temperature,
-            SignalStrength = entity.SignalStrength
-        };
+        return entity;
     }
 
-    public async Task<(IReadOnlyList<TemperatureReadingDto> Readings, TemperatureReadingDto? Highest, TemperatureReadingDto? Lowest)> GetReadingsLast24hAsync(Guid deviceId)
+    public async Task<(IReadOnlyList<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsLast24hAsync(string deviceId)
     {
         var (readings, highest, lowest) = await _readingRepository.GetReadingsForLast24hWithMinMaxAsync(deviceId);
-        
-        var readingDtos = readings.Select(e => new TemperatureReadingDto
-        {
-            DeviceId = e.DeviceId,
-            CreatedAt = e.CreatedAt,
-            Temperature = e.Temperature,
-            SignalStrength = e.SignalStrength
-        }).ToList();
-        
-        TemperatureReadingDto? highestDto = highest != null ? new TemperatureReadingDto
-        {
-            DeviceId = highest.DeviceId,
-            CreatedAt = highest.CreatedAt,
-            Temperature = highest.Temperature,
-            SignalStrength = highest.SignalStrength
-        } : null;
-        
-        TemperatureReadingDto? lowestDto = lowest != null ? new TemperatureReadingDto
-        {
-            DeviceId = lowest.DeviceId,
-            CreatedAt = lowest.CreatedAt,
-            Temperature = lowest.Temperature,
-            SignalStrength = lowest.SignalStrength
-        } : null;
-        
-        return (readingDtos, highestDto, lowestDto);
+        return (readings.ToList(), highest, lowest);
     }
 
-    public async Task<IReadOnlyList<DailyTemperatureStatsDto>> GetDailyStatsLast30DaysAsync(Guid deviceId)
+    public async Task<IReadOnlyList<DailyTemperatureStats>> GetDailyStatsLast30DaysAsync(string deviceId)
     {
         var stats = await _readingRepository.GetDailyStatsForLast30DaysAsync(deviceId);
-        return stats.Select(s => new DailyTemperatureStatsDto
-        {
-            Date = s.Date,
-            Average = s.Average,
-            Lowest = s.Minimum,
-            Highest = s.Maximum
-        }).ToList();
+        return stats.ToList();
     }
 }
