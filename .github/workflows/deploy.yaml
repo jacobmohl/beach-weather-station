@@ -11,7 +11,7 @@ env:
   AZURE_RESOURCE_GROUP: rg-jamobeachweatherstation-test
   AZURE_FUNCTIONAPP_NAME: func-jamobeachweatherstationapi-test
   AZURE_BICEP_FILE: server/iac/main.bicep
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/BeachWeatherStation.Worker
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/src/BeachWeatherStation.Worker/BeachWeatherStation.Worker.csproj
   DOTNET_VERSION: 9.0.x
 
 jobs:
