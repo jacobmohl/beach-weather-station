@@ -12,7 +12,7 @@ env:
   AZURE_RESOURCE_GROUP: rg-jamobeachweatherstation-test
   AZURE_FUNCTIONAPP_NAME: func-jamobeachweatherstationapi-test
   AZURE_BICEP_FILE: server/iac/main.bicep
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/src/BeachWeatherStation.Worker/BeachWeatherStation.Worker.csproj
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/src/BeachWeatherStation.Worker/
   DOTNET_VERSION: 9.0.x
 
 jobs:
@@ -23,10 +23,10 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v3
 
-    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+    # - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+    #   uses: actions/setup-dotnet@v3
+    #   with:
+    #     dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: pwsh
