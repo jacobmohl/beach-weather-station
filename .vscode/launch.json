@@ -6,6 +6,17 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:azureFunctions.pickProcess}",
-        }
+        },
+        {
+            "name": ".NET Console Launch",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/server/src/BeachWeatherStation.Console/bin/Debug/net9.0/BeachWeatherStation.Console.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/server/src/BeachWeatherStation.Console",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }        
     ]
 }
