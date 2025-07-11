@@ -34,6 +34,8 @@ public class DeviceRepository : IDeviceRepository
     /// </summary>
     public async Task<IEnumerable<Device>> GetAllDevicesAsync()
     {
+        await _dbContext.Database.EnsureCreatedAsync();
+
         return await _dbContext.Devices
             .AsNoTracking()
             .ToListAsync();

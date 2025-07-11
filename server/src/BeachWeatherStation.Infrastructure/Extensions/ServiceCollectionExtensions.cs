@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
         if (useInMemory)
         {
             services.AddDbContext<BeachWeatherStationDbContext>(options =>
-                options.UseInMemoryDatabase("BeachWeatherStationDb"));
+                options.UseInMemoryDatabase("BeachWeatherStation"));
         }
         else
         {

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BeachWeatherStation.Domain.Entities;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace BeachWeatherStation.Infrastructure.Data;
 
@@ -16,11 +17,43 @@ public class BeachWeatherStationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultContainer("BeachWeatherStation");
-        modelBuilder.Entity<BatteryChange>();
-        modelBuilder.Entity<Device>();
-        modelBuilder.Entity<Heartbeat>();
-        modelBuilder.Entity<TemperatureReading>();
+
+        modelBuilder.Entity<BatteryChange>()
+            .ToContainer("BatteryChangesTest")
+            .Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>();  
+        modelBuilder.Entity<BatteryChange>()                          
+            .HasKey(e => e.Id);
+
+        modelBuilder.Entity<Device>()
+            .ToContainer("DevicesTest")
+            .Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>(); 
+        modelBuilder.Entity<Device>()
+            .HasKey(e => e.Id);
+
+        modelBuilder.Entity<Heartbeat>()
+            .ToContainer("HeartbeatsTest")
+            .Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>();
+        modelBuilder.Entity<Heartbeat>()
+            .HasKey(e => e.Id);
+
+        modelBuilder.Entity<TemperatureReading>()
+            .ToContainer("TemperatureReadingsTest")
+            .Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>();
+        modelBuilder.Entity<TemperatureReading>()
+            .HasKey(e => e.Id);
+        modelBuilder.Entity<TemperatureReading>()
+            .Property<string>("CreatedAtYearMonth")
+                .HasValueGenerator<YearMonthValueGenerator>();
+        modelBuilder.Entity<TemperatureReading>()
+            .HasPartitionKey(e => new object[] {
+                e.DeviceId,
+                EF.Property<string>(e, "CreatedAtYearMonth"),
+                e.CreatedAt
+            });
 
         // Seed the database with a default device
         modelBuilder.Entity<Device>().HasData(
