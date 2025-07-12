@@ -9,7 +9,7 @@ public class HeartbeatConfiguration : IEntityTypeConfiguration<Heartbeat>
 {
     public void Configure(EntityTypeBuilder<Heartbeat> builder)
     {
-        builder.ToContainer("HeartbeatsTest")
+        builder.ToContainer("HeartbeatsProd")
             .Property(e => e.Id)
             .HasValueGenerator<GuidValueGenerator>();
 
@@ -25,7 +25,7 @@ public class HeartbeatConfiguration : IEntityTypeConfiguration<Heartbeat>
 
         builder.HasDefaultTimeToLive(7 * 24 * 60 * 60); // 7 days in seconds
 
-        builder.HasIndex(e => e.DeviceId);
-        builder.HasIndex(e => e.CreatedAt);
+        // builder.HasIndex(e => e.DeviceId);
+        // builder.HasIndex(e => e.CreatedAt);
     }
 }

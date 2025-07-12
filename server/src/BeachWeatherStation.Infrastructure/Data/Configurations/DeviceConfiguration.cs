@@ -8,7 +8,7 @@ public class DeviceConfiguration : IEntityTypeConfiguration<Device>
 {
     public void Configure(EntityTypeBuilder<Device> builder)
     {
-        builder.ToContainer("DevicesTest")
+        builder.ToContainer("DevicesProd")
             .Property(e => e.Id);
 
         builder.HasKey(e => e.Id);
@@ -18,6 +18,6 @@ public class DeviceConfiguration : IEntityTypeConfiguration<Device>
             e.Id
         });
 
-        builder.HasIndex(e => e.Id);
+        // builder.HasIndex(e => e.Id);
     }
 }

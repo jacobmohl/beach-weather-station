@@ -9,7 +9,7 @@ public class TemperatureReadingConfiguration : IEntityTypeConfiguration<Temperat
 {
     public void Configure(EntityTypeBuilder<TemperatureReading> builder)
     {
-        builder.ToContainer("TemperatureReadingsTest")
+        builder.ToContainer("TemperatureReadingsProd")
             .Property(e => e.Id)
             .HasValueGenerator<GuidValueGenerator>();
 
@@ -23,8 +23,8 @@ public class TemperatureReadingConfiguration : IEntityTypeConfiguration<Temperat
             e.DeviceId,
         });
 
-        builder.HasIndex(e => e.DeviceId);
-        builder.HasIndex(e => e.CreatedAt);
-        builder.HasIndex(e => e.Temperature);
+        // builder.HasIndex(e => e.DeviceId);
+        // builder.HasIndex(e => e.CreatedAt);
+        // builder.HasIndex(e => e.Temperature);
     }
 }

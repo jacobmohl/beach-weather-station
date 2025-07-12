@@ -9,7 +9,7 @@ public class BatteryChangeConfiguration : IEntityTypeConfiguration<BatteryChange
 {
     public void Configure(EntityTypeBuilder<BatteryChange> builder)
     {
-        builder.ToContainer("BatteryChangesTest")
+        builder.ToContainer("BatteryChangesProd")
             .Property(e => e.Id)
             .HasValueGenerator<GuidValueGenerator>();
 
@@ -23,7 +23,7 @@ public class BatteryChangeConfiguration : IEntityTypeConfiguration<BatteryChange
             e.DeviceId
         });
 
-        builder.HasIndex(e => e.DeviceId);
-        builder.HasIndex(e => e.CreatedAt);
+        // builder.HasIndex(e => e.DeviceId);
+        // builder.HasIndex(e => e.CreatedAt);
     }
 }
