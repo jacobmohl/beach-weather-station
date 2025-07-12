@@ -34,6 +34,10 @@ GET http://localhost:7071/api/readings/latest24hours
 ### Get latest 30 days statistics
 GET http://localhost:7071/api/readings/latest30days
 
+
+### Delete Reading by id
+DELETE http://localhost:7071/api/readings/f6dca2af-eec2-47e1-9766-ab22113a7bd3
+
 ### Test Sensor Error
 POST http://localhost:7071/api/readings
 Content-Type: application/json
@@ -45,3 +49,5 @@ Content-Type: application/json
   "sensorId":"Sensor1",
   "signalStrength": -101
 }
+
+

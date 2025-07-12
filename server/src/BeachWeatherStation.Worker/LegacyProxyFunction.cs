@@ -166,6 +166,39 @@ public class LegacyProxyFunction
         }
     }
 
+    [Function("LegacyDeleteReading")]
+    public async Task<IActionResult> LegacyDeleteReading(
+        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "api/readings/{id}")] HttpRequest req, string id)
+    {
+        _logger.LogInformation("Processing legacy delete reading request for ID: {Id}", id);
+
+        try
+        {
+            // Validate the ID
+            if (string.IsNullOrEmpty(id))
+            {
+                _logger.LogWarning("Empty or null ID provided for delete reading request");
+                return new BadRequestObjectResult("Invalid ID");
+            }
+
+            // Attempt to delete the reading
+            var success = await _readingService.DeleteReadingAsync(id);
+            if (!success)
+            {
+                _logger.LogWarning("Failed to delete reading with ID: {Id}", id);
+                return new NotFoundObjectResult($"Reading with ID {id} not found");
+            }
+
+            _logger.LogInformation("Successfully deleted reading with ID: {Id}", id);
+            return new OkResult();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error processing delete reading request for ID: {Id}", id);
+            return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
     [Function("LegacyGetLatest24HoursReadings")]
     public async Task<IActionResult> LegacyGetLatest24HoursReadings(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/readings/latest24hours")] HttpRequest req)

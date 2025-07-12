@@ -108,4 +108,17 @@ public class TemperatureReadingService
 
         return stats.ToList();
     }
+
+    public async Task<bool> DeleteReadingAsync(string id)
+    {
+        if (!Guid.TryParse(id, out var readingId))
+        {
+            return false;
+        }
+
+        await _readingRepository.DeleteReadingAsync(readingId);
+        await _cache.RemoveByTagAsync("TemperatureReadings");
+
+        return true;
+    }
 }
