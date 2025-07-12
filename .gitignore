@@ -439,4 +439,7 @@ __azurite_db_blob_extent__.json
 __azurite_db_table__.json
 __azurite_db_table_extent__.json
 
+# Azure Functions localsettings file
+local.settings.json
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,dotnetcore

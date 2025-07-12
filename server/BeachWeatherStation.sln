@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2022
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Console", "src\BeachWeatherStation.Console\BeachWeatherStation.Console.csproj", "{83E0A9E1-F616-425B-9B6A-3F558378EBBC}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Domain", "src\BeachWeatherStation.Domain\BeachWeatherStation.Domain.csproj", "{A409C7DC-C669-6A9E-0200-290DFD12A6F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Application", "src\BeachWeatherStation.Application\BeachWeatherStation.Application.csproj", "{3F5AB7DE-A041-9738-FD93-DCD53C9BBA44}"
@@ -10,10 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Infrastructure", "src\BeachWeatherStation.Infrastructure\BeachWeatherStation.Infrastructure.csproj", "{48A50820-9FC3-908F-AD91-E185A740B9E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Worker", "src\BeachWeatherStation.Worker\BeachWeatherStation.Worker.csproj", "{B0BE1E49-2404-E69F-AA32-647C5C0A114C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeachWeatherStation.Console", "src\BeachWeatherStation.Console\BeachWeatherStation.Console.csproj", "{83E0A9E1-F616-425B-9B6A-3F558378EBBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,8 +70,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{83E0A9E1-F616-425B-9B6A-3F558378EBBC} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

@@ -17,42 +17,7 @@ public class BeachWeatherStationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        modelBuilder.Entity<BatteryChange>()
-            .ToContainer("BatteryChangesTest")
-            .Property(e => e.Id)
-                .HasValueGenerator<GuidValueGenerator>();  
-        modelBuilder.Entity<BatteryChange>()                          
-            .HasKey(e => e.Id);
-
-        modelBuilder.Entity<Device>()
-            .ToContainer("DevicesTest")
-            .Property(e => e.Id);
-        modelBuilder.Entity<Device>()
-            .HasKey(e => e.Id);
-
-        modelBuilder.Entity<Heartbeat>()
-            .ToContainer("HeartbeatsTest")
-            .Property(e => e.Id)
-                .HasValueGenerator<GuidValueGenerator>();
-        modelBuilder.Entity<Heartbeat>()
-            .HasKey(e => e.Id);
-
-        modelBuilder.Entity<TemperatureReading>()
-            .ToContainer("TemperatureReadingsTest")
-            .Property(e => e.Id)
-                .HasValueGenerator<GuidValueGenerator>();
-        modelBuilder.Entity<TemperatureReading>()
-            .HasKey(e => e.Id);
-        modelBuilder.Entity<TemperatureReading>()
-            .Property<string>("CreatedAtYearMonth")
-                .HasValueGenerator<YearMonthValueGenerator>();
-        modelBuilder.Entity<TemperatureReading>()
-            .HasPartitionKey(e => new {
-                e.DeviceId,
-                //CreatedAtYearMonth = EF.Property<string>(e, "CreatedAtYearMonth")//,
-                //e.CreatedAt
-            });
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(BeachWeatherStationDbContext).Assembly);
 
         // Seed the database with a default device
         modelBuilder.Entity<Device>().HasData(
@@ -62,6 +27,7 @@ public class BeachWeatherStationDbContext : DbContext
                 Name = "Fynshoved",
                 Status = DeviceStatus.Online
             });
-        //base.OnModelCreating(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
     }
 }

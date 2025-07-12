@@ -34,6 +34,8 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// </summary>
     public async Task<IEnumerable<BatteryChange>> GetBatteryChangesByDeviceIdAsync(string deviceId)
     {
+        
+        
         return await _dbContext.BatteryChanges
             .AsNoTracking()
             .Where(x => x.DeviceId == deviceId)
@@ -91,6 +93,8 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     /// </summary>
     public async Task<IEnumerable<BatteryChange>> GetBatteryChangesLast24hAsync(string deviceId)
     {
+        await _dbContext.Database.EnsureCreatedAsync();
+        
         var since = DateTime.UtcNow.AddHours(-24);
         return await _dbContext.BatteryChanges
             .AsNoTracking()
