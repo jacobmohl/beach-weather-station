@@ -168,7 +168,7 @@ public class LegacyProxyFunction
 
     [Function("LegacyGetLatest24HoursReadings")]
     public async Task<IActionResult> LegacyGetLatest24HoursReadings(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "api/readings/latest24hours")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/readings/latest24hours")] HttpRequest req)
     {
         _logger.LogInformation("Processing legacy request for latest 24 hours readings");
 
@@ -212,7 +212,7 @@ public class LegacyProxyFunction
 
     [Function("LegacyGetLatestReading")]
     public async Task<IActionResult> LegacyGetLatestReading(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "api/readings/latest")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/readings/latest")] HttpRequest req)
     {
         _logger.LogInformation("Processing legacy request for latest reading");
 
@@ -258,7 +258,7 @@ public class LegacyProxyFunction
 
     [Function("LegacyGetLatest30DaysStats")]
     public async Task<IActionResult> LegacyGetLatest30DaysStats(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "api/readings/latest30days")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/readings/latest30days")] HttpRequest req)
     {
         _logger.LogInformation("Processing legacy request for latest 30 days statistics");
 
