@@ -18,5 +18,5 @@ public class Heartbeat
     /// <summary>
     /// The timestamp when the heartbeat was sent.
     /// </summary>
-    public DateTime CreatedAt { get; set; }    
+    public DateTimeOffset CreatedAt { get; set; }    
 }

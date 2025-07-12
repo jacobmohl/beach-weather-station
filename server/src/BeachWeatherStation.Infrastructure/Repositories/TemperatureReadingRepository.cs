@@ -77,7 +77,6 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
 
     public async Task<TemperatureReading?> GetLatestReadingAsync(string deviceId)
     {
-        var since = DateTime.UtcNow.AddHours(-24);
         var reading = await _dbContext.TemperatureReadings.AsNoTracking()
                .OrderByDescending(x =>  x.CreatedAt)
                 .FirstOrDefaultAsync();
@@ -87,7 +86,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
 
     public async Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(string deviceId)
     {
-        var since = DateTime.UtcNow.AddHours(-24);
+        var since = DateTimeOffset.UtcNow.AddHours(-24);
         var readings = await _dbContext.TemperatureReadings.AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
             .OrderBy(x => x.CreatedAt)
@@ -99,7 +98,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
 
     public async Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(string deviceId)
     {
-        var since = DateTime.UtcNow.Date.AddDays(-30);
+        var since = DateTimeOffset.UtcNow.Date.AddDays(-30);
         var readings = await _dbContext.TemperatureReadings.AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
             .ToListAsync();

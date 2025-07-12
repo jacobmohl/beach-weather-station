@@ -40,7 +40,6 @@ jobs:
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_TEST }}
 
   deploy-to-production:
-    needs: deploy-to-test
     runs-on: windows-latest
     environment: prod
     steps:

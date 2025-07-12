@@ -18,7 +18,7 @@ public abstract class Reading
     /// <summary>
     /// The timestamp when the reading was recorded.
     /// </summary>
-    public required DateTime CreatedAt { get; set; }
+    public required DateTimeOffset CreatedAt { get; set; }
 
     /// <summary>
     /// The signal strength of the reading in dBm, if available.

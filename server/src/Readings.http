@@ -1,12 +1,22 @@
 ### Ingest a new temperature reading
 POST http://localhost:7071/v2/readings
 Content-Type: application/json
-
-
 {
   "deviceId": "Sensor1",
   "temperature": 18.38,
   "signalStrength": -97
+}
+
+
+### Reading with date
+POST http://iot.jacobmohl.dk/v2/readings?code=5geW9gCmH2QjJLdSqJNY1ujISCGRQQCtOer9DJ28Oli5oeaFssui2w==
+Content-Type: application/json
+
+{
+  "deviceId": "Sensor1",
+  "temperature": 18.5,
+  "signalStrength": -97,
+  "createdAt": "2025-07-12T14:34:33.3608724Z"
 }
 
 ### Get the latest temperature reading for a device

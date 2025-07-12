@@ -28,7 +28,7 @@ public class HeartbeatRepository : IHeartbeatRepository
     /// </summary>
     public async Task<IEnumerable<Heartbeat>> GetHeartbeatsLast24hAsync(string deviceId)
     {
-        var since = DateTime.UtcNow.AddHours(-24);
+        var since = DateTimeOffset.UtcNow.AddHours(-24);
         return await _dbContext.Heartbeats.AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
             .ToListAsync();

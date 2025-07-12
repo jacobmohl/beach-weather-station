@@ -14,7 +14,7 @@ public class LegacyReadingResponseDto
     
     public string SensorId { get; set; } = string.Empty;
     
-    public DateTime CapturedAt { get; set; }
+    public DateTimeOffset CapturedAt { get; set; }
     
     public LegacyMetaData? Meta { get; set; }
     

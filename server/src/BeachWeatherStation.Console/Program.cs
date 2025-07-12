@@ -45,7 +45,8 @@ class Program
     private static async Task Import()
     {
         string importDirectory = "./export";
-        string defaultApiUrl = "http://localhost:7071/v2/readings";
+        //string defaultApiUrl = "http://localhost:7071/v2/readings";
+        string defaultApiUrl = "http://iot.jacobmohl.dk/v2/readings?code=5geW9gCmH2QjJLdSqJNY1ujISCGRQQCtOer9DJ28Oli5oeaFssui2w==";
         int importedCount = 0;
         int errorCount = 0;
         int skippedCount = 0;
@@ -55,6 +56,7 @@ class Program
         Console.WriteLine($"Enter API URL (default: {defaultApiUrl}):");
         string? customApiUrl = Console.ReadLine();
         string apiBaseUrl = string.IsNullOrEmpty(customApiUrl) ? defaultApiUrl : customApiUrl;
+        
         Console.WriteLine("Do you want to import all files or specify a date range? (all/range)");
         var rangeOption = Console.ReadLine()?.ToLower();
         
@@ -132,7 +134,7 @@ class Program
                     {
                         var dto = new TemperatureReadingDto
                         {
-                            DeviceId = reading.SensorId ?? string.Empty,
+                            DeviceId = "Sensor1",
                             CreatedAt = reading.CapturedAt,
                             Temperature = reading.Reading,
                             SignalStrength = reading.SignalStrength

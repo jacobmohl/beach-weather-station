@@ -18,5 +18,5 @@ public class BatteryChange
     /// <summary>
     /// The timestamp when the battery change occurred.
     /// </summary>
-    public required DateTime CreatedAt { get; set; }
+    public required DateTimeOffset CreatedAt { get; set; }
 }

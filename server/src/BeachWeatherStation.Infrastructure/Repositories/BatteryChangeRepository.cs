@@ -95,7 +95,7 @@ public class BatteryChangeRepository : IBatteryChangeRepository
     {
         await _dbContext.Database.EnsureCreatedAsync();
         
-        var since = DateTime.UtcNow.AddHours(-24);
+        var since = DateTimeOffset.UtcNow.AddHours(-24);
         return await _dbContext.BatteryChanges
             .AsNoTracking()
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
