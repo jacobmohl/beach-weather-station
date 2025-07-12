@@ -113,7 +113,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
             .ToListAsync();
 
         var stats = readings
-            .GroupBy(r => r.CreatedAt.Date)
+            .GroupBy(r => TimeZoneInfo.ConvertTimeFromUtc(r.CreatedAt.DateTime, TimeZoneInfo.Local).Date)
             .Select(g => new DailyTemperatureStats
             {
                 Date = g.Key,

@@ -280,7 +280,7 @@ public class LegacyProxyFunction
             var response = stats.Select(s => new LegacyDailyStatsResponseDto
             {
                 CapturedAt = s.Date,
-                Count = 0, // We'll calculate this separately
+                Count = 1, // We'll calculate this separately
                 AverageReading = s.Average,
                 HighestReading = s.Maximum,
                 LowestReading = s.Minimum,
