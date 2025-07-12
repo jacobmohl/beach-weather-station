@@ -8,6 +8,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        // Cache
+        services.AddHybridCache();
+
         // Validators
         services.AddScoped<TemperatureReadingValidator>();
         services.AddScoped<HeartbeatValidator>();

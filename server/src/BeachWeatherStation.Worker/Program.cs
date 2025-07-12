@@ -37,12 +37,13 @@ var host = new HostBuilder()
             {
                 options.Rules.Remove(defaultRule);
             }
-        });     
-           
+        });
+
         // Configure appropriate logging levels
         logging.AddFilter("Microsoft", LogLevel.Warning);
         logging.AddFilter("System", LogLevel.Warning);
         logging.AddFilter("BeachWeatherStation", LogLevel.Information);
+        logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Information);
     })    
     .Build();
     

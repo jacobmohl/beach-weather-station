@@ -77,9 +77,11 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
 
     public async Task<TemperatureReading?> GetLatestReadingAsync(string deviceId)
     {
-        var reading = await _dbContext.TemperatureReadings.AsNoTracking()
-               .OrderByDescending(x =>  x.CreatedAt)
-                .FirstOrDefaultAsync();
+        var reading = await _dbContext.TemperatureReadings
+            .WithPartitionKey(deviceId)
+            .AsNoTracking()
+            .OrderByDescending(x =>  x.CreatedAt)
+            .FirstOrDefaultAsync();
 
         return reading;
     }
@@ -87,10 +89,14 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
     public async Task<(IEnumerable<TemperatureReading> Readings, TemperatureReading? Highest, TemperatureReading? Lowest)> GetReadingsForLast24hWithMinMaxAsync(string deviceId)
     {
         var since = DateTimeOffset.UtcNow.AddHours(-24);
-        var readings = await _dbContext.TemperatureReadings.AsNoTracking()
+        
+        var readings = await _dbContext.TemperatureReadings
+            .WithPartitionKey(deviceId)
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
             .OrderBy(x => x.CreatedAt)
+            .AsNoTracking()
             .ToListAsync();
+
         var highest = readings.OrderByDescending(x => x.Temperature).FirstOrDefault();
         var lowest = readings.OrderBy(x => x.Temperature).FirstOrDefault();
         return (readings, highest, lowest);
@@ -99,9 +105,13 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
     public async Task<IEnumerable<DailyTemperatureStats>> GetDailyStatsForLast30DaysAsync(string deviceId)
     {
         var since = DateTimeOffset.UtcNow.Date.AddDays(-30);
-        var readings = await _dbContext.TemperatureReadings.AsNoTracking()
+        var readings = await _dbContext.TemperatureReadings
+            .WithPartitionKey(deviceId)
             .Where(x => x.DeviceId == deviceId && x.CreatedAt >= since)
+            .OrderBy(x => x.CreatedAt)
+            .AsNoTracking()
             .ToListAsync();
+
         var stats = readings
             .GroupBy(r => r.CreatedAt.Date)
             .Select(g => new DailyTemperatureStats
