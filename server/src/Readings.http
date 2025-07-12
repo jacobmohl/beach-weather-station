@@ -5,8 +5,8 @@ Content-Type: application/json
 
 {
   "deviceId": "Sensor1",
-  "temperature": 18.56,
-  "signalStrength": -93
+  "temperature": 18.38,
+  "signalStrength": -97
 }
 
 ### Get the latest temperature reading for a device

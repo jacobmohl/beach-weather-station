@@ -12,7 +12,7 @@ class Program
     {
         // TODO: Replace with your actual CosmosDB connection details
 
-        string outputFile = "./export/";
+        string outputFile = "./export";
 
         CosmosClient client = new CosmosClient(endpointUri, primaryKey);
         Container container = client.GetContainer(databaseId, containerId);
@@ -44,7 +44,7 @@ class Program
 
         foreach (var kvp in groups)
         {
-            string fileName = $"{kvp.Key}.json";
+            string fileName = $"{outputFile}/{kvp.Key}.json";
             string json = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented);
             await File.WriteAllTextAsync(fileName, json);
             Console.WriteLine($"Exported {kvp.Value.Count} documents to {fileName}");

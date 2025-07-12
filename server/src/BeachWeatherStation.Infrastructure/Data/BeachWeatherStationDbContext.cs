@@ -27,8 +27,7 @@ public class BeachWeatherStationDbContext : DbContext
 
         modelBuilder.Entity<Device>()
             .ToContainer("DevicesTest")
-            .Property(e => e.Id)
-                .HasValueGenerator<GuidValueGenerator>(); 
+            .Property(e => e.Id);
         modelBuilder.Entity<Device>()
             .HasKey(e => e.Id);
 
@@ -49,10 +48,10 @@ public class BeachWeatherStationDbContext : DbContext
             .Property<string>("CreatedAtYearMonth")
                 .HasValueGenerator<YearMonthValueGenerator>();
         modelBuilder.Entity<TemperatureReading>()
-            .HasPartitionKey(e => new object[] {
+            .HasPartitionKey(e => new {
                 e.DeviceId,
-                EF.Property<string>(e, "CreatedAtYearMonth"),
-                e.CreatedAt
+                //CreatedAtYearMonth = EF.Property<string>(e, "CreatedAtYearMonth")//,
+                //e.CreatedAt
             });
 
         // Seed the database with a default device

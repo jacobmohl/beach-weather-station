@@ -19,7 +19,7 @@ public class Device
     /// <summary>
     /// The current status of the device.
     /// </summary>
-    public required DeviceStatus Status { get; set; }
+    public required DeviceStatus Status { get; set; } = DeviceStatus.Online;
 }
 
 /// <summary>

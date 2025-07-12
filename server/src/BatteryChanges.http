@@ -1,17 +1,17 @@
 ### Ingest a new battery change for a device
-POST http://localhost:7071/api/batterychanges
+POST http://localhost:7071/v2/batterychanges
 Content-Type: application/json
 Accept: application/json
 
 {
-  "DeviceId": "00000000-0000-0000-0000-000000000001"
+  "DeviceId": "Sensor1"
 }
 
 ### Get battery changes for the last 24 hours for a specific device
-GET http://localhost:7071/api/batterychanges/last24h/00000000-0000-0000-0000-000000000001
+GET http://localhost:7071/v2/batterychanges/last24h/
 Accept: application/json
 
 ### Get the latest battery change for a specific device
-GET http://localhost:7071/api/batterychanges/latest/00000000-0000-0000-0000-000000000001
+GET http://localhost:7071/v2/batterychanges/latest/
 Accept: application/json
 
