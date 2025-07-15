@@ -121,7 +121,7 @@ public class TemperatureReadingRepository : ITemperatureReadingRepository
                 Minimum = g.Min(r => r.Temperature),
                 Maximum = g.Max(r => r.Temperature)
             })
-            .OrderByDescending(s => s.Date)
+            .OrderBy(s => s.Date)
             .ToList();
         return stats;
     }
