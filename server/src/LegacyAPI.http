@@ -1,8 +1,8 @@
 # Legacy API Endpoints Testing
 
 ### Legacy Temperature Reading
-//POST http://localhost:7071/api/readings
-POST http://iot.jacobmohl.dk/api/readings?code=5geW9gCmH2QjJLdSqJNY1ujISCGRQQCtOer9DJ28Oli5oeaFssui2w==
+POST http://localhost:7071/api/readings
+//POST http://iot.jacobmohl.dk/api/readings?code=5geW9gCmH2QjJLdSqJNY1ujISCGRQQCtOer9DJ28Oli5oeaFssui2w==
 Content-Type: application/json
 
 {

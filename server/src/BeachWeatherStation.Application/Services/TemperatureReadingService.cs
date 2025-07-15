@@ -3,34 +3,40 @@ using BeachWeatherStation.Domain.Interfaces;
 using BeachWeatherStation.Domain.Entities;
 using BeachWeatherStation.Application.Validators;
 using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 
 namespace BeachWeatherStation.Application.Services;
 
 public class TemperatureReadingService
-{
+{    
     private readonly ITemperatureReadingRepository _readingRepository;
     private readonly IDeviceRepository _deviceRepository;
     private readonly TemperatureReadingValidator _validator;
+    private readonly ILogger<TemperatureReadingService> _logger;
     private readonly HybridCache _cache;
 
     public TemperatureReadingService(
         ITemperatureReadingRepository readingRepository,
         IDeviceRepository deviceRepository,
         TemperatureReadingValidator validator,
+        ILogger<TemperatureReadingService> logger,
         HybridCache cache)
     {
         _readingRepository = readingRepository;
         _deviceRepository = deviceRepository;
         _validator = validator;
+        _logger = logger;
         _cache = cache;
     }
 
-    public async Task<bool> IngestReadingAsync(CreateTemperatureReadingDto dto)
+    public async Task IngestReadingAsync(CreateTemperatureReadingDto dto)
     {
+        // Validate the dto
         var validationResult = _validator.Validate(dto);
         if (!validationResult.IsValid)
-            return false;
+            throw new ArgumentException($"Invalid temperature reading data. Error {validationResult.Error}",nameof(dto));
 
+        // Build the entity
         var entity = new TemperatureReading
         {
             Id = Guid.NewGuid(),
@@ -39,11 +45,28 @@ public class TemperatureReadingService
             Temperature = dto.Temperature,
             SignalStrength = dto.SignalStrength,
         };
-        await _readingRepository.AddReadingAsync(entity);
 
+        // Get the latest reading for the device
+        var latestReading = await _readingRepository.GetLatestReadingAsync(dto.DeviceId);
+        if (latestReading != null)
+        {
+            // Check if the new reading is too close to the latest reading
+            var timeDifference = dto.CreatedAt - latestReading.CreatedAt;
+            if (dto.Temperature == latestReading.Temperature && timeDifference < TimeSpan.FromMinutes(1))
+            {
+                _logger.LogInformation(
+                    "Skipping reading for device {DeviceId} with temperature {Temperature} at {CreatedAt} as it is too close to the latest reading at {LatestReadingAt}",
+                    dto.DeviceId, dto.Temperature, dto.CreatedAt, latestReading.CreatedAt);
+                // If the new reading is too close, we can skip it
+                return;
+            }
+        }
+
+        // Save the reading
+        await _readingRepository.AddReadingAsync(entity);
         await _cache.RemoveByTagAsync("TemperatureReadings");
 
-        return true;
+        return;
     }
 
     public async Task<TemperatureReading?> GetLatestReadingAsync(string deviceId)

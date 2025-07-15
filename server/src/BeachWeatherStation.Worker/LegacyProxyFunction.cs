@@ -47,6 +47,8 @@ public class LegacyProxyFunction
                 return new BadRequestObjectResult("Empty request body");
             }
 
+            _logger.LogInformation("Received legacy reading request: {RequestBody}", requestBody);
+
             // Parse JSON to determine payload type
             using var jsonDoc = JsonDocument.Parse(requestBody);
             var root = jsonDoc.RootElement;
@@ -110,10 +112,13 @@ public class LegacyProxyFunction
             };
 
             // Forward to existing service
-            var success = await _readingService.IngestReadingAsync(newDto);
-            if (!success)
+            try
             {
-                _logger.LogWarning("Temperature reading validation failed");
+                await _readingService.IngestReadingAsync(newDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Validation failed for legacy temperature reading: {Message}", ex.Message);
                 return new BadRequestObjectResult("Temperature reading validation failed");
             }
 
@@ -122,7 +127,7 @@ public class LegacyProxyFunction
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error processing legacy temperature reading");
+            _logger.LogError(ex, "Error processing legacy temperature reading: {Message}", ex.Message);
             return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
         }
     }
@@ -190,7 +195,7 @@ public class LegacyProxyFunction
             }
 
             _logger.LogInformation("Successfully deleted reading with ID: {Id}", id);
-            return new OkResult();
+            return new AcceptedResult();
         }
         catch (Exception ex)
         {

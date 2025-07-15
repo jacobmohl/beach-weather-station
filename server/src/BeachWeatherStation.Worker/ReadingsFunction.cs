@@ -39,8 +39,11 @@ public class ReadingsFunction
                 return new BadRequestObjectResult("Invalid request format");
             }
 
-            var success = await _readingService.IngestReadingAsync(readingDto);
-            if (!success)
+            try
+            {
+                await _readingService.IngestReadingAsync(readingDto);
+            }
+            catch (Exception ex)
             {
                 _logger.LogWarning("Temperature reading validation failed");
                 return new BadRequestObjectResult("Validation failed");
