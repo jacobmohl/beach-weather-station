@@ -17,9 +17,9 @@ env:
   DOTNET_VERSION: 9.0.x
 
 jobs:
-  deploy-to-test:
+
+  build:
     runs-on: windows-latest
-    environment: dev
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v3
@@ -30,6 +30,26 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release -r win-x64 --output ./output
         popd
+        
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: functionapp-package
+        path: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'        
+    
+
+
+
+  deploy-to-test:
+    runs-on: windows-latest
+    needs: build
+    environment: dev
+    steps:
+
+    - name: Download build
+      uses: actions/download-artifact@v4
+      with:
+        name: functionapp-package
 
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
@@ -39,24 +59,24 @@ jobs:
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_TEST }}
 
-  deploy-to-production:
-    runs-on: windows-latest
-    environment: prod
-    steps:
-    - name: 'Checkout GitHub Action'
-      uses: actions/checkout@v3
+  # deploy-to-production:
+  #   runs-on: windows-latest
+  #   environment: prod
+  #   steps:
+  #   - name: 'Checkout GitHub Action'
+  #     uses: actions/checkout@v3
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
-      shell: pwsh
-      run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-        dotnet build --configuration Release -r win-x64 --output ./output
-        popd
+  #   - name: 'Resolve Project Dependencies Using Dotnet'
+  #     shell: pwsh
+  #     run: |
+  #       pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+  #       dotnet build --configuration Release -r win-x64 --output ./output
+  #       popd
 
-    - name: 'Run Azure Functions Action'
-      uses: Azure/functions-action@v1
-      id: fa
-      with:
-        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME_PROD }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_PROD }}
+  #   - name: 'Run Azure Functions Action'
+  #     uses: Azure/functions-action@v1
+  #     id: fa
+  #     with:
+  #       app-name: ${{ env.AZURE_FUNCTIONAPP_NAME_PROD }}
+  #       package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+  #       publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_PROD }}
