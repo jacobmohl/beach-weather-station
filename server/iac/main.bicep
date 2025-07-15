@@ -4,7 +4,7 @@
 // az deployment group create --resource-group rg-jamobeachweatherstation-prod --template-file server/iac/main.bicep --parameters environment=prod
 
 param location string = resourceGroup().location
-param environment string = 'prod'
+param environment string = 'test'
 
 var projectName string = 'beachweatherstation'
 
@@ -114,6 +114,8 @@ resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
       ftpsState: 'Disabled'
       http20Enabled: true
       webSocketsEnabled: true
+      netFrameworkVersion: 'v9.0'
+      use32BitWorkerProcess: false
       appSettings: [
         {
           name: 'AzureWebJobsDashboard'
@@ -122,6 +124,10 @@ resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageaccount.name};AccountKey=${storageaccount.listKeys().keys[0].value}'
+        }
+        {
+          name:'AzureFunctionsWebHost__hostid'
+          value: '${projectName}api${environment}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
@@ -152,21 +158,25 @@ resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
         //   value: signalR.listKeys().primaryConnectionString
         // }
         {
-          name: 'CosmosDbEndpoint'
+          name: 'CosmosDb:AccountEndpoint'
           value: 'https://${cosmosServer.name}.documents.azure.com:443'
         }
         {
-          name: 'CosmosDbKey'
+          name: 'CosmosDb:AccountKey'
           value: cosmosServer.listKeys().primaryMasterKey
         } 
         {
-          name: 'CosmosDbDatabase'
-          value: 'BeachWeatherStation${environment}'
+          name: 'CosmosDb:DatabaseName'
+          value: 'BeachWeatherStation'
         }
         {
-          name: 'CosmosDbSensorContainer'
-          value: 'SensorReadings${environment}'
-        }        
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '0'
+        }
+        {
+          name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
+          value: '1'
+        }
       ]
     }
   }
