@@ -56,7 +56,7 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME_TEST }}
-        package: './'
+        package: 'functionapp-package'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_TEST }}
 
   # deploy-to-production:
