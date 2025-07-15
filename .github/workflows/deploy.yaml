@@ -13,7 +13,7 @@ env:
   AZURE_FUNCTIONAPP_NAME_TEST: func-jamobeachweatherstationapi-test
   AZURE_FUNCTIONAPP_NAME_PROD: func-jamobeachweatherstationapi-prod
   AZURE_BICEP_FILE: server/iac/main.bicep
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/src/BeachWeatherStation.Worker/
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: server/src/BeachWeatherStation.Worker
   DOTNET_VERSION: 9.0.x
 
 jobs:
@@ -56,7 +56,7 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME_TEST }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        package: './'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_TEST }}
 
   # deploy-to-production:
